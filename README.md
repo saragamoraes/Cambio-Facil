@@ -25,13 +25,13 @@ API de Câmbio
 ## 🖼️ Telas do Projeto
 
 ### Página Inicial
-![Página Inicial](images/home.png)
+![Página Inicial](home.png)
 
 ### Conversão de Moedas
-![Conversão de Moedas](images/conversao.png)
+![Conversão de Moedas](conversao.png)
 
 ### Sobre o Projeto
-![Sobre](images/sobre.png)
+![Sobre](sobre.png)
 
 
 
