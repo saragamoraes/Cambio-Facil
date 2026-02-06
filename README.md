@@ -8,30 +8,27 @@ O projeto foi criado com foco em aprendizado e prática de integração com APIs
 
 # 🚀 Funcionalidades:
 
-Conversão de valores entre diferentes moedas,
-Consumo de API de câmbio com taxas atualizadas,
-Seleção de moeda de origem e destino,
-Exibição clara do valor convertido.
+- Conversão de valores entre diferentes moedas,
+- Consumo de API de câmbio com taxas atualizadas,
+- Seleção de moeda de origem e destino,
+- Exibição clara do valor convertido.
 
 
 # 🛠️ Tecnologias Utilizadas:
 
-HTML5
-CSS3
-JavaScript 
-Python
-API de Câmbio 
+- HTML5
+- CSS3
+- JavaScript 
+- Python
+- API de Câmbio 
 
 ## 🖼️ Telas do Projeto
 
-### Página Inicial
-![Página Inicial](home.png)
-
-### Conversão de Moedas
-![Conversão de Moedas](conversao.png)
-
-### Sobre o Projeto
-![Sobre](sobre.png)
+<div align="center">
+  <img src="home.png" width="270"/>
+  <img src="conversao.png" width="250"/>
+  <img src="explicacao.png" width="250"/>
+</div>
 
 
 
