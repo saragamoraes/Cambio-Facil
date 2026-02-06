@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="profile-page-wrapper">
+
+    <!-- 🔥 MENSAGENS ACIMA DO CARD -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-wrapper">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} flash-on-top" role="alert">
+                        {{ message }}
+                        <button type="button" class="close-alert" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- 🔥 CARD DO PERFIL -->
+    <div class="conversion-page-container profile-container">
+    
+        <div class="profile-header">
+            <h1>Meu Perfil</h1><br>
+            <p>Olá, {{ user_name }}. Atualize as informações da sua conta.</p>
+        </div>
+
+    <form action="{{ url_for('profile') }}" method="POST" class="profile-form">
+        
+        <div class="form-group">
+            <label for="name">Nome Completo</label>
+            <input type="text" id="name" name="name" value="{{ user_name }}" placeholder="Seu nome" required class="profile-input">
+        </div>
+
+        <div class="form-group">
+            <label for="email">E-mail</label>
+            <input type="email" id="email" name="email" value="{{ user_email }}" placeholder="Seu melhor e-mail" required class="profile-input">
+        </div>
+        
+        <div class="form-group password-field">
+            <label for="new_password">Nova Senha (Opcional)</label>
+            <div class="input-with-toggle">
+                <input type="password" id="new_password" name="new_password" placeholder="Criar nova senha" class="profile-input password-input">
+                <span class="password-toggle" data-target="new_password">
+                    <img src="{{ url_for('static', filename='images/Naovisivel.png') }}" 
+                         alt="Mostrar Senha" 
+                         class="password-toggle-img">
+                </span>
+            </div>
+        </div>
+        
+        <div class="form-group password-field">
+            <label for="confirm_password">Confirmar Nova Senha</label>
+            <div class="input-with-toggle">
+                <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirme a nova senha" class="profile-input password-input">
+                <span class="password-toggle" data-target="confirm_password">
+                    <img src="{{ url_for('static', filename='images/Naovisivel.png') }}" 
+                         alt="Mostrar Senha" 
+                         class="password-toggle-img">
+                </span>
+            </div>
+        </div>
+
+        
+        <div class="profile-form-footer">
+            <button type="submit" class="btn-primary">Salvar Alterações</button>
+            <small style="color: #666;">Última atualização: hoje</small>
+        </div>
+
+    </form>
+    
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const pathVisivel = "{{ url_for('static', filename='images/visivel.png') }}";
+        const pathNaoVisivel = "{{ url_for('static', filename='images/Naovisivel.png') }}";
+
+        // Toggle senha
+        document.querySelectorAll('.password-toggle').forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const passwordInput = document.getElementById(targetId);
+                const toggleImg = this.querySelector('.password-toggle-img');
+                
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    toggleImg.src = pathVisivel;
+                    toggleImg.alt = "Ocultar Senha";
+                } else {
+                    passwordInput.type = 'password';
+                    toggleImg.src = pathNaoVisivel;
+                    toggleImg.alt = "Mostrar Senha";
+                }
+            });
+        });
+
+        // Fechar alertas
+        document.querySelectorAll('.close-alert').forEach(button => {
+            button.addEventListener('click', function() {
+                const alertElement = this.closest('.alert');
+                if (alertElement) {
+                    alertElement.style.opacity = '0';
+                    setTimeout(() => alertElement.remove(), 300);
+                }
+            });
+        });
+
+    });
+</script>
+
+{% endblock %}

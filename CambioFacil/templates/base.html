@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ title }}</title>
+<link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.png') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+ <header class="main-header">
+  <div class="header-content">
+   <div class="logo-container">
+    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo Câmbio Fácil">
+    <h2>Câmbio Fácil</h2>
+   </div>
+   
+   <nav class="main-nav">
+        <a href="{{ url_for('home') }}" class="{% if request.endpoint == 'home' %}active-nav{% endif %}">Início</a>
+    
+    <a href="{{ url_for('about') }}"class="{% if request.endpoint == 'about' %}active-nav{% endif %}">Sobre</a></a>
+
+
+    
+    {% if logged_in %}
+          <a href="{{ url_for('profile') }}" class="{% if request.endpoint == 'profile' %}active-nav{% endif %}">Perfil</a>
+     
+          <a href="{{ url_for('history') }}" class="{% if request.endpoint == 'history' %}active-nav{% endif %}">Histórico</a>
+    {% endif %}
+    
+    <a href="#">Contato</a>
+   </nav>
+   
+   <div class="header-actions">
+    {% if logged_in %}
+     <a href="{{ url_for('logout') }}" class="btn-logout">Sair</a>
+    {% else %}
+     <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+    {% endif %}
+    
+    </div>
+  </div>
+</header>
+
+<main class="auth-main-content">
+ {% block content %}{% endblock %}
+</main>
+
+<footer class="main-footer">
+    <div class="footer-content">
+        <p>© 2025 Câmbio Fácil. Todos os direitos reservados.</p>
+        <div class="footer-links">
+            <a href="#">Termos de Uso</a>
+            <span class="link-separator">|</span>
+            <a href="#">Política de Privacidade</a>
+        </div>
+    </div>
+</footer>
+
+<script src="{{ url_for('static', filename='js/main.js') }}?v=1.1"></script>
+</body>
+</html>

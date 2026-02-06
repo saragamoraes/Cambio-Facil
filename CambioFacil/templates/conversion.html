@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="conversion-page-container">
+    
+    <form action="{{ url_for('conversion') }}" method="POST" class="conversion-input-section">
+        
+        <div class="input-group">
+            <label for="valor">Valor:</label>
+            <input type="number" id="valor" name="valor" class="input-large" 
+                   value="{{ valor_input }}" placeholder="0.00" step="0.01">
+        </div>
+        
+        <div class="input-group select-group">
+            <label>Converter de:</label>
+            <div class="custom-select-wrapper">
+                <div class="custom-select-display" data-currency="{{ from_currency_code }}">
+                    <img src="{{ url_for('static', filename='images/' + from_currency_code.lower() + '.png') }}" 
+                         alt="Bandeira" class="flag-icon">
+                    <span class="currency-code">{{ from_currency_code }}</span>
+                    <img src="{{ url_for('static', filename='images/seta.png') }}" alt="Seta" class="select-arrow">
+                </div>
+                <div class="custom-options-list">
+                    {% set all_currencies = [('USD', 'usd', 'Estados Unidos'), ('BRL', 'brl', 'Brasil'), ('EUR', 'eur', 'União Europeia'), ('JPY', 'jpy', 'Japão'), ('GBP', 'gbp', 'Reino Unido'), ('CNY', 'cny', 'China')] %}
+                    
+                    {% for code, img, name in all_currencies %}
+                        <div class="custom-option" data-value="{{ code }}" data-img="{{ img }}">
+                            <img src="{{ url_for('static', filename='images/' + img + '.png') }}" alt="Bandeira {{ name }}" class="flag-icon">
+                            <div class="option-details">
+                                <span class="currency-code">{{ code }}</span>
+                                <span class="country-name">{{ name }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <input type="hidden" id="selected-from-currency" name="from_currency" value="{{ from_currency_code }}">
+        </div>
+
+        <div class="swap-icon-container">
+            <img src="{{ url_for('static', filename='images/swap.png') }}" alt="Trocar" class="swap-icon">
+        </div>
+
+        <div class="input-group select-group">
+            <label>Para:</label>
+            <div class="custom-select-wrapper">
+                <div class="custom-select-display" data-currency="{{ to_currency_code }}">
+                    <img src="{{ url_for('static', filename='images/' + to_currency_code.lower() + '.png') }}" 
+                         alt="Bandeira" class="flag-icon">
+                    <span class="currency-code">{{ to_currency_code }}</span>
+                    <img src="{{ url_for('static', filename='images/seta.png') }}" alt="Seta" class="select-arrow">
+                </div>
+                <div class="custom-options-list">
+                    {% for code, img, name in all_currencies %}
+                        <div class="custom-option" data-value="{{ code }}" data-img="{{ img }}">
+                            <img src="{{ url_for('static', filename='images/' + img + '.png') }}" alt="Bandeira {{ name }}" class="flag-icon">
+                            <div class="option-details">
+                                <span class="currency-code">{{ code }}</span>
+                                <span class="country-name">{{ name }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <input type="hidden" id="selected-to-currency" name="to_currency" value="{{ to_currency_code }}">
+        </div>
+        
+        <button type="submit" class="btn-converter">Converter</button>
+
+    </form>
+    
+    <div class="conversion-result-section">
+        
+        <div class="result-panel">
+            <h3>Valor ({{ from_currency_code }}):</h3>
+            <p class="result-value">{{ valor_input }}</p>
+        </div>
+        
+        <div class="result-panel">
+            <h3>Valor Convertido ({{ to_currency_code }}):</h3>
+            <p class="result-value">{{ valor_convertido }}</p>
+        </div>
+        
+        <div class="result-panel date-panel">
+            <h3>Data cotação utilizada:</h3>
+            <p class="result-value">{{ data_cotacao }}</p>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

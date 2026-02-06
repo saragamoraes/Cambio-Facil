@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="auth-container">
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}" role="alert">
+                        {{ message }}
+                        <button type="button" class="close-alert" data-dismiss="alert" aria-label="Fechar">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    <div class="auth-tabs">
+        <a href="#login" class="tab-link active" id="tab-login">Login</a>
+        <a href="#register" class="tab-link" id="tab-register">Cadastro</a>
+    </div>
+
+    <div class="auth-card-content">
+        
+        <div id="login" class="auth-form-panel active">
+            <h3 class="form-title">Acesso</h3>
+            
+            <form action="{{ url_for('login') }}" method="POST" class="login-form">
+                
+                <div class="form-group">
+                    <label for="email-login">E-mail</label>
+                    <input type="email" id="email-login" name="email" placeholder="Seu e-mail" required>
+                </div>
+                
+                <div class="form-group password-field">
+                    <label for="password-login">Senha</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="password-login" name="password" placeholder="Sua senha" required>
+                        <span class="password-toggle" data-target="password-login">
+                            <img src="{{ url_for('static', filename='images/Naovisivel.png') }}" 
+                                 alt="Mostrar Senha" 
+                                 class="password-toggle-img">
+                        </span>
+                    </div>
+                </div>
+                
+                <a href="#" class="forgot-password">Esqueceu a senha?</a>
+                
+                <button type="submit" class="btn-primary">Entrar</button>
+            </form>
+        </div>
+
+        <div id="register" class="auth-form-panel hidden">
+            <h3 class="form-title">Crie sua Conta</h3>
+            
+            <form action="{{ url_for('register') }}" method="POST" class="login-form">
+                
+                <div class="form-group">
+                    <label for="name-register">Nome Completo</label>
+                    <input type="text" id="name-register" name="name" placeholder="Seu nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email-register">E-mail</label>
+                    <input type="email" id="email-register" name="email" placeholder="Seu melhor e-mail" required>
+                </div>
+                
+                <div class="form-group password-field">
+                    <label for="password-register">Crie uma Senha</label>
+                    <div class="input-with-toggle">
+                        <input type="password" id="password-register" name="password" placeholder="Mínimo 6 caracteres" required>
+                        <span class="password-toggle" data-target="password-register">
+                            <img src="{{ url_for('static', filename='images/Naovisivel.png') }}" 
+                                 alt="Mostrar Senha" 
+                                 class="password-toggle-img">
+                        </span>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const tabLogin = document.getElementById('tab-login');
+        const tabRegister = document.getElementById('tab-register');
+        const panelLogin = document.getElementById('login');
+        const panelRegister = document.getElementById('register');
+
+        function activateTab(tab, panel, hash) {
+            // 1. Remove classes de todos
+            tabLogin.classList.remove('active');
+            tabRegister.classList.remove('active');
+            panelLogin.classList.remove('active');
+            panelRegister.classList.remove('active');
+            panelLogin.classList.add('hidden');
+            panelRegister.classList.add('hidden');
+            
+            // 2. Adiciona classes ao selecionado
+            tab.classList.add('active');
+            panel.classList.add('active');
+            panel.classList.remove('hidden');
+            
+            // 3. Atualiza a URL sem recarregar a página
+            if (window.location.hash !== hash) {
+                window.history.pushState(null, null, hash); 
+            }
+        }
+
+        // 1. Lógica de clique nas abas
+        tabLogin.addEventListener('click', function(e) {
+            e.preventDefault();
+            activateTab(tabLogin, panelLogin, '#login');
+        });
+
+        tabRegister.addEventListener('click', function(e) {
+            e.preventDefault();
+            activateTab(tabRegister, panelRegister, '#register');
+        });
+        
+        // 2. Lógica para carregar a aba correta baseada na URL
+        const currentHash = window.location.hash;
+        if (currentHash === '#register') {
+            activateTab(tabRegister, panelRegister, '#register');
+        } else {
+            // Garante que o login é o padrão
+            activateTab(tabLogin, panelLogin, '#login'); 
+        }
+
+        // ----------------------------------------------------
+        // ✅ CÓDIGO PARA TOGGLE DE SENHA
+        // ----------------------------------------------------
+        const passwordToggles = document.querySelectorAll('.password-toggle');
+
+        passwordToggles.forEach(toggle => {
+            toggle.addEventListener('click', function() {
+                const targetId = this.dataset.target;
+                const passwordInput = document.getElementById(targetId);
+                // Busca a tag <img> dentro do span
+                const toggleImg = this.querySelector('.password-toggle-img');
+                
+                // Variáveis para os caminhos das imagens
+                const pathVisivel = "{{ url_for('static', filename='images/visivel.png') }}";
+                const pathNaoVisivel = "{{ url_for('static', filename='images/Naovisivel.png') }}";
+                
+                if (passwordInput.type === 'password') {
+                    // MUDAR para TEXTO (Mostrar Senha)
+                    passwordInput.type = 'text';
+                    // Mudar a imagem para 'visivel' (olho aberto)
+                    toggleImg.src = pathVisivel;
+                    toggleImg.alt = "Ocultar Senha";
+                    
+                } else {
+                    // MUDAR para PASSWORD (Ocultar Senha)
+                    passwordInput.type = 'password';
+                    // Mudar a imagem para 'Naovisivel' (olho fechado)
+                    toggleImg.src = pathNaoVisivel;
+                    toggleImg.alt = "Mostrar Senha";
+                }
+            });
+        });
+
+        // ----------------------------------------------------
+        // ✅ NOVO CÓDIGO PARA FECHAR ALERTA
+        // ----------------------------------------------------
+        document.querySelectorAll('.close-alert').forEach(button => {
+            button.addEventListener('click', function() {
+                // Encontra o elemento pai (o .alert) e o remove com uma transição
+                const alertElement = this.closest('.alert');
+                if (alertElement) {
+                    alertElement.style.opacity = '0'; // Inicia a transição de opacidade
+                    setTimeout(() => alertElement.remove(), 300); // Remove após 0.3s
+                }
+            });
+        });
+
+    });
+</script>
+{% endblock %}

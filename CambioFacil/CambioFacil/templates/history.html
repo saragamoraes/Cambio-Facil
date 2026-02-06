@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="history-container">
+    <h1 class="page-title">Seu Histórico de Conversões</h1>
+    
+    {% if user_history %}
+        <p class="history-count">Você tem **{{ user_history | length }}** conversões registradas.</p>
+        
+        <table class="conversion-table">
+            <thead>
+                <tr>
+                    <th>Data e Hora</th>
+                    <th>Valor De</th>
+                    <th>Moeda De</th>
+                    <th>Valor Para</th>
+                    <th>Moeda Para</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for conversion in user_history %}
+                <tr>
+                    <td>{{ conversion.timestamp.strftime('%d/%m/%Y %H:%M:%S') }}</td>
+                    <td>{{ "%.2f" | format(conversion.amount_from) }}</td>
+                    <td class="currency-code-col">{{ conversion.currency_from }}</td>
+                    <td>{{ "%.2f" | format(conversion.amount_to) }}</td>
+                    <td class="currency-code-col">{{ conversion.currency_to }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="empty-history">
+            <p>Você ainda não tem nenhuma conversão registrada.</p>
+            <a href="{{ url_for('conversion') }}" class="btn-primary">Fazer Minha Primeira Conversão</a>
+        </div>
+    {% endif %}
+    
+</section>
+{% endblock %}

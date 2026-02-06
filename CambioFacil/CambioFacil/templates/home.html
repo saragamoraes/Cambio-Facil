@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="home-content">
+    <div class="text-side">
+        <h1>Converta seu dinheiro em segundos.</h1>
+        <p>Câmbio rápido, preciso e com as taxas sempre atualizadas</p>
+        
+        <a href="{{ url_for('conversion') }}" class="btn-start btn-start-icon">
+    Começar Conversão
+    <img src="{{ url_for('static', filename='images/ComecarSeta.png') }}" 
+         alt=""
+         class="icon-inside-btn">
+</a>
+
+    </div>
+    
+    <div class="image-side">
+        <img src="{{ url_for('static', filename='images/dinheiro.png') }}" alt="Ilustração de conversão de dinheiro">
+    </div>
+</section>
+{% endblock %}
